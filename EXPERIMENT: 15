@@ -1,0 +1,72 @@
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char user[5][20], file[5][5][20];
+    int ucount = 0, fcount[5] = {0};
+    int ch, i, u;
+    char uname[20], fname[20];
+
+    while (1) {
+        printf("\n1.Create User  2.Create File  3.Display  4.Exit");
+        printf("\nEnter choice: ");
+        scanf("%d", &ch);
+
+        if (ch == 1) {
+            printf("Enter user name: ");
+            scanf("%s", user[ucount]);
+            ucount++;
+            printf("User created\n");
+        }
+
+        else if (ch == 2) {
+            printf("Enter user name: ");
+            scanf("%s", uname);
+
+            for (u = 0; u < ucount; u++)
+                if (strcmp(user[u], uname) == 0) break;
+
+            if (u == ucount)
+                printf("User not found\n");
+            else {
+                printf("Enter file name: ");
+                scanf("%s", fname);
+                strcpy(file[u][fcount[u]], fname);
+                fcount[u]++;
+                printf("File created\n");
+            }
+        }
+
+        else if (ch == 3) {
+            printf("Enter user name: ");
+            scanf("%s", uname);
+
+            for (u = 0; u < ucount; u++)
+                if (strcmp(user[u], uname) == 0) break;
+
+            if (u == ucount)
+                printf("User not found\n");
+            else {
+                printf("Files:\n");
+                for (i = 0; i < fcount[u]; i++)
+                    printf("%s\n", file[u][i]);
+            }
+        }
+
+        else if (ch == 4)
+            break;
+    }
+
+    return 0;
+}
+
+OUTPUT:
+1.Create User  2.Create File  3.Display  4.Exit
+Enter choice: 1
+Enter user name: user1
+User created
+
+1.Create User  2.Create File  3.Display  4.Exit
+Enter choice: 2
+Enter user name: user2
+User not found
