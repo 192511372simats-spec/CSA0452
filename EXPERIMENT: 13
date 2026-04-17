@@ -1,0 +1,78 @@
+#include <stdio.h>
+
+int main() {
+    int block[5] = {100, 500, 200, 300, 600};
+    int process[4] = {212, 417, 112, 426};
+    int i, j;
+
+    printf("FIRST FIT:\n");
+    for(i=0; i<4; i++) {
+        for(j=0; j<5; j++) {
+            if(block[j] >= process[i]) {
+                printf("Process %d (%d) -> Block %d\n", i+1, process[i], j+1);
+                block[j] -= process[i];
+                break;
+            }
+        }
+        if(j==5)
+            printf("Process %d (%d) -> Not Allocated\n", i+1, process[i]);
+    }
+
+    int block2[5] = {100, 500, 200, 300, 600};
+    printf("\nBEST FIT:\n");
+    for(i=0; i<4; i++) {
+        int best = -1;
+        for(j=0; j<5; j++) {
+            if(block2[j] >= process[i]) {
+                if(best == -1 || block2[j] < block2[best])
+                    best = j;
+            }
+        }
+        if(best != -1) {
+            printf("Process %d (%d) -> Block %d\n", i+1, process[i], best+1);
+            block2[best] -= process[i];
+        } else {
+            printf("Process %d (%d) -> Not Allocated\n", i+1, process[i]);
+        }
+    }
+
+    int block3[5] = {100, 500, 200, 300, 600};
+    printf("\nWORST FIT:\n");
+    for(i=0; i<4; i++) {
+        int worst = -1;
+        for(j=0; j<5; j++) {
+            if(block3[j] >= process[i]) {
+                if(worst == -1 || block3[j] > block3[worst])
+                    worst = j;
+            }
+        }
+        if(worst != -1) {
+            printf("Process %d (%d) -> Block %d\n", i+1, process[i], worst+1);
+            block3[worst] -= process[i];
+        } else {
+            printf("Process %d (%d) -> Not Allocated\n", i+1, process[i]);
+        }
+    }
+
+    return 0;
+}
+
+
+OUTPUT:
+FIRST FIT:
+Process 1 (212) -> Block 2
+Process 2 (417) -> Block 5
+Process 3 (112) -> Block 2
+Process 4 (426) -> Not Allocated
+
+BEST FIT:
+Process 1 (212) -> Block 4
+Process 2 (417) -> Block 2
+Process 3 (112) -> Block 3
+Process 4 (426) -> Block 5
+
+WORST FIT:
+Process 1 (212) -> Block 5
+Process 2 (417) -> Block 2
+Process 3 (112) -> Block 5
+Process 4 (426) -> Not Allocated
