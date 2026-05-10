@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <sys/stat.h>
+
+void printPermissions(mode_t mode)
+{
+    printf("Owner Permissions : ");
+    printf((mode & S_IRUSR) ? "r" : "-");
+    printf((mode & S_IWUSR) ? "w" : "-");
+    printf((mode & S_IXUSR) ? "x" : "-");
+
+    printf("\nGroup Permissions : ");
+    printf((mode & S_IRGRP) ? "r" : "-");
+    printf((mode & S_IWGRP) ? "w" : "-");
+    printf((mode & S_IXGRP) ? "x" : "-");
+
+    printf("\nOthers Permissions: ");
+    printf((mode & S_IROTH) ? "r" : "-");
+    printf((mode & S_IWOTH) ? "w" : "-");
+    printf((mode & S_IXOTH) ? "x" : "-");
+}
+
+int main()
+{
+    struct stat fileStat;
+    char filename[50];
+
+    printf("Enter file name: ");
+    scanf("%s", filename);
+
+    if (stat(filename, &fileStat) < 0)
+    {
+        printf("Unable to get file details!\n");
+        return 0;
+    }
+
+    printf("\n----- FILE DETAILS -----\n");
+    printf("File Size: %ld bytes\n", fileStat.st_size);
+
+    printf("\n----- FILE PERMISSIONS -----\n");
+    printPermissions(fileStat.st_mode);
+
+    printf("\n\n----- FILE TYPE -----\n");
+    if (S_ISREG(fileStat.st_mode))
+        printf("Regular File\n");
+    else if (S_ISDIR(fileStat.st_mode))
+        printf("Directory\n");
+    else
+        printf("Other type of file\n");
+
+    return 0;
+}
