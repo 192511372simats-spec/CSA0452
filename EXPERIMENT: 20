@@ -1,0 +1,66 @@
+#include <stdio.h>
+
+int mutex = 1, wrt = 1, readcount = 0;
+
+int wait(int s) { return --s; }
+int signal(int s) { return ++s; }
+
+void reader() {
+    mutex = wait(mutex);
+    readcount++;
+    if(readcount == 1)
+        wrt = wait(wrt);
+    mutex = signal(mutex);
+
+    printf("Reader is reading...\n");
+
+    mutex = wait(mutex);
+    readcount--;
+    if(readcount == 0)
+        wrt = signal(wrt);
+    mutex = signal(mutex);
+}
+
+void writer() {
+    wrt = wait(wrt);
+    printf("Writer is writing...\n");
+    wrt = signal(wrt);
+}
+
+int main() {
+    int choice;
+    while(1) {
+        printf("\n1. Reader\n2. Writer\n3. Exit\nEnter choice: ");
+        scanf("%d",&choice);
+
+        if(choice == 1)
+            reader();
+        else if(choice == 2)
+            writer();
+        else
+            break;
+    }
+    return 0;
+}
+
+ OUTPUT:
+
+1. Reader
+2. Writer
+3. Exit
+Enter choice: 1
+Reader is reading...
+
+1. Reader
+2. Writer
+3. Exit
+Enter choice: 2
+Writer is writing...
+
+1. Reader
+2. Writer
+3. Exit
+Enter choice: 3
+
+
+=== Code Execution Successful ===
