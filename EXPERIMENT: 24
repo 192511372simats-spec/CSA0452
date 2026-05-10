@@ -1,0 +1,23 @@
+#include <stdio.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <string.h>
+
+int main() {
+    int fd;
+    char writeBuffer[100] = "Hello UNIX System Calls!";
+    char readBuffer[100];
+
+    fd = open("sample.txt", O_CREAT | O_RDWR, 0777);
+
+    write(fd, writeBuffer, strlen(writeBuffer));
+    printf("Data written into file.\n");
+
+    lseek(fd, 0, SEEK_SET);
+
+    read(fd, readBuffer, sizeof(readBuffer));
+    printf("Data read from file: %s\n", readBuffer);
+
+    close(fd);
+    return 0;
+}
